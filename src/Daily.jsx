@@ -4,7 +4,8 @@ import ReactExport from 'react-data-export';
 import moment from 'moment';
 import data from './data.json';
 
-const { ExcelFile } = ReactExport;
+import ExcelFile from './components/ExcelFile';
+// const { ExcelFile } = ReactExport;
 const { ExcelSheet } = ReactExport.ExcelFile;
 const { ExcelColumn } = ReactExport.ExcelFile;
 const currency = 'IDR';
@@ -234,7 +235,17 @@ Object.keys(DataByBondType).forEach(d => {
   prevFrequencySummary += prevFrequencyTotal;
 
   compiledData.push([
-    { value: num, style: { font: { bold: true } } },
+    {
+      value: num,
+      style: {
+        font: { bold: true },
+        alignment: {
+          horizontal: 'center',
+          vertical: 'center',
+        },
+      },
+      merge: { r: 2 },
+    },
     {
       value: DataByBondType[d].name,
       style: {
@@ -524,6 +535,9 @@ compiledData.push([
         right: { style: 'thin' },
       },
     },
+    merge: {
+      c: 1,
+    },
   },
   {
     value: '',
@@ -619,9 +633,27 @@ const sheet1 = [
   {
     columns: [],
     data: [
-      [{ value: 'Beneficiary of Securities Transaction Report (PLTE)', style: { font: { bold: true } } }],
-      [{ value: 'Daily Report Of Bond Transaction (in Bio)', style: { font: { bold: true } } }],
-      [{ value: 'July 21, 2020', style: { font: { bold: true } } }],
+      [
+        {
+          value: 'Beneficiary of Securities Transaction Report (PLTE)',
+          style: { font: { bold: true }, alignment: { horizontal: 'center', vertical: 'center' } },
+          merge: { c: 6 },
+        },
+      ],
+      [
+        {
+          value: 'Daily Report Of Bond Transaction (in Bio)',
+          style: { font: { bold: true }, alignment: { horizontal: 'center', vertical: 'center' } },
+          merge: { c: 6 },
+        },
+      ],
+      [
+        {
+          value: 'July 21, 2020',
+          style: { font: { bold: true }, alignment: { horizontal: 'center', vertical: 'center' } },
+          merge: { c: 6 },
+        },
+      ],
     ],
   },
   {
