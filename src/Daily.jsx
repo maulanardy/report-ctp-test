@@ -2,9 +2,13 @@
 import React from 'react';
 import ReactExport from 'react-data-export';
 import moment from 'moment';
+import XLSX from 'tempa-xlsx';
+import JSZip from 'jszip/dist/jszip';
+import { saveAs } from 'file-saver';
 import data from './data.json';
 
 import ExcelFile from './components/ExcelFile';
+import * as _DataUtil from './components/DataUtil';
 // const { ExcelFile } = ReactExport;
 const { ExcelSheet } = ReactExport.ExcelFile;
 const { ExcelColumn } = ReactExport.ExcelFile;
@@ -898,9 +902,38 @@ class Download extends React.Component {
     </tr>
   );
 
+  handleProcessData = () => {
+    const dataSheet = (0, _DataUtil.excelSheetFromDataSet)(sheet1);
+    console.log(dataSheet);
+    const zip = new JSZip();
+    const dailyWorkbook = {
+      SheetNames: ['Daily Management Report'],
+      Sheets: {
+        'Daily Management Report': dataSheet,
+      },
+    };
+    const wDaily = XLSX.write(dailyWorkbook, { bookType: 'xlsx', bookSST: true, type: 'binary' });
+    zip.file('daily.xlsx', wDaily, { binary: true });
+    // const monthlyWorkbook = {
+    //   SheetNames: ['Monthly Management Report'],
+    //   Sheets: {
+    //     'Monthly Management Report': dataSheet,
+    //   },
+    // };
+    // const wMonthly = XLSX.write(monthlyWorkbook, { bookType: 'xlsx', bookSST: true, type: 'binary' });
+    // zip.file('monthly.xlsx', wMonthly, { binary: true });
+
+    zip.generateAsync({ type: 'blob' }).then(content => {
+      saveAs(content, 'reporting.zip');
+    });
+  };
+
   render() {
     return (
       <>
+        <button type="button" onClick={this.handleProcessData}>
+          download
+        </button>
         {sheet1.map(d => this.lev1(d.data))}
         <ExcelFile filename="Daily Management Report">
           <ExcelSheet dataSet={sheet1} name="Daily Management Report" />

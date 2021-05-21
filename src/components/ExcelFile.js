@@ -1,3 +1,4 @@
+/* eslint-disable no-lonely-if */
 /* eslint-disable no-unused-vars */
 /* eslint-disable no-restricted-globals */
 /* eslint-disable no-unused-expressions */
@@ -188,7 +189,12 @@ const ExcelFile = (_React$Component => {
       value: function render() {
         const _props = this.props;
         const { hideElement } = _props;
+        const { processData } = _props;
         const { element } = _props;
+
+        if (processData) {
+          return null;
+        }
 
         if (hideElement) {
           return null;

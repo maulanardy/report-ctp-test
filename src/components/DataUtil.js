@@ -66,7 +66,6 @@ const excelSheetFromDataSet = function excelSheetFromDataSet(dataSet) {
   const ws = {};
   const range = { s: { c: 10000000, r: 10000000 }, e: { c: 0, r: 0 } };
   let rowCount = 0;
-  const merges = [];
 
   dataSet.forEach(dataSetItem => {
     const { columns } = dataSetItem;
@@ -111,12 +110,6 @@ const excelSheetFromDataSet = function excelSheetFromDataSet(dataSet) {
   if (range.s.c < 10000000) {
     ws['!ref'] = _tempaXlsx2.default.utils.encode_range(range);
   }
-
-  if (merges.length) {
-    ws['!merges'] = merges;
-  }
-
-  console.log(ws);
 
   return ws;
 };
